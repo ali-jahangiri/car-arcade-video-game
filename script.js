@@ -16,6 +16,7 @@ class Playground {
         this.controllerInstance.initializerControllerRender(gameContainer);
 
         this.controllerInstance.onStartBtnClicked(() => {
+            this.vehicle.attacheKeyboardEvent();
             this.vehicle.moveToXAxisTangent();
         })
     }
@@ -24,35 +25,48 @@ class Playground {
 
 class Vehicle {
     constructor(container) {
-        this.moveEvent = window.addEventListener("keyup" , this.keyboardArrowEvent.bind(this));
         
         this.speed = 1;
-        this.placement = "center";
-        this.STATIC_PLACEMENT_NAME = {
-            39 : "right",
-            37  : "left",
+        this.position = 0;
+
+        this.STATIC = {
+            placementNameOperator : { 
+                39 : "+",
+                37  : "-",
+            },
         }
+        
 
         const vehicleContainer = document.createElement("div");
         vehicleContainer.classList.add("vehicleContainer")
         const carImageTemplate = `<img class="vehicleImage" src="./assets/car.png" alt="car-thumbnail" />`;
         vehicleContainer.innerHTML = carImageTemplate;
         container.appendChild(vehicleContainer);
-        this.vehicleContainer = vehicleContainer;
+        this.vehicleContainer = document.querySelector(".vehicleContainer");
     }
 
-    
+    attacheKeyboardEvent() {
+        window.addEventListener("keyup" , this.keyboardArrowEvent.bind(this));
+    }
 
     keyboardArrowEvent(e) {
-        const targetNewPlacement = this.STATIC_PLACEMENT_NAME[e.keyCode];
-
-        if(this.placement === "center") {
-            this.move(targetNewPlacement)
-        }
+        const targetNewPlacementOperator = this.STATIC.placementNameOperator[e.keyCode];
+        if(targetNewPlacementOperator) 
+            this.move(targetNewPlacementOperator);
     }
 
-    move(newPlacement) {
-
+    move(operator) {
+        let prevPosition = this.position;
+        const newPosition = operator === "-" ? --prevPosition : ++prevPosition;
+        
+        
+        const percentageElementPos = `${(newPosition + 1) * 50}%`;
+        const tolerancePercentageElement = newPosition !== 0 ? (newPosition < 0 ? "+ 10%" : "- 10%") : "";
+        document.querySelector(".vehicleContainer")
+            .style
+            .left = `calc(${percentageElementPos} ${tolerancePercentageElement})`;
+        
+        this.position = newPosition;
     }
 
     moveToXAxisTangent() {
