@@ -15,7 +15,9 @@ class Playground {
 
         this.controllerInstance.initializerControllerRender(gameContainer);
 
-
+        this.controllerInstance.onStartBtnClicked(() => {
+            this.vehicle.moveToXAxisTangent();
+        })
     }
 }
 
@@ -31,10 +33,12 @@ class Vehicle {
             37  : "left",
         }
 
-        this.vehicleContainer = document.createElement("div");
-        const carImageTemplate = `<img class="vehicle" src="./assets/car.png" alt="car-thumbnail" />`;
-        this.vehicleContainer.innerHTML = carImageTemplate;
-        container.appendChild(this.vehicleContainer);
+        const vehicleContainer = document.createElement("div");
+        vehicleContainer.classList.add("vehicleContainer")
+        const carImageTemplate = `<img class="vehicleImage" src="./assets/car.png" alt="car-thumbnail" />`;
+        vehicleContainer.innerHTML = carImageTemplate;
+        container.appendChild(vehicleContainer);
+        this.vehicleContainer = vehicleContainer;
     }
 
     
@@ -48,14 +52,20 @@ class Vehicle {
     }
 
     move(newPlacement) {
-        
+
     }
 
+    moveToXAxisTangent() {
+        console.log(this.vehicleContainer);
+        document.querySelector(".vehicleContainer").classList.add("onXTangent")
+    }
 }
 
 
 class ControllerUi {
-    constructor() {}
+    constructor() {
+        this.onStartBtnClickedCallback = () => {};
+    }
 
     initializerControllerRender(container) {
         const controllerTemplate = `
@@ -75,9 +85,14 @@ class ControllerUi {
         const controllerContainer = document.getElementById("controller");
 
         startBtn.addEventListener("click" , e => {
-            controllerContainer.classList.add("controllerHide")
+            controllerContainer.classList.add("controllerHide");
+            this.onStartBtnClickedCallback();
         });
 
+    }
+
+    onStartBtnClicked(callback) {
+        this.onStartBtnClickedCallback = callback;
     }
 }
 

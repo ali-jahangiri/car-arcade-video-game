@@ -215,8 +215,7 @@ body {
   bottom: -100% !important;
 }
 
-.vehicle {
-  width: 3.6rem;
+.vehicleContainer {
   position: absolute;
   left: 50%;
   bottom: 250px;
@@ -224,5 +223,13 @@ body {
   transition: .4s;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
+}
+
+.vehicleContainer .vehicleImage {
+  width: 3.6rem;
+}
+
+.vehicleContainer.onXTangent {
+  bottom: 20px !important;
 }
 /*# sourceMappingURL=style.css.map */

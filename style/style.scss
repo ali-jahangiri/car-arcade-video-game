@@ -74,12 +74,20 @@ body {
 }
 
 
-
-.vehicle {
-    width: 3.6rem;
+.vehicleContainer {
     position: absolute;
     left: 50%;
     bottom: 250px;
     transition: .4s;
     transform: translateX(-50%);
+
+    .vehicleImage {
+        width: 3.6rem;
+    
+    }
+
+    &.onXTangent {
+        bottom: 20px !important;
+    }
+    
 }
