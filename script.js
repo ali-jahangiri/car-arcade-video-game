@@ -13,11 +13,76 @@ class Playground {
         this.controllerInstance = new ControllerUi();
         this.vehicle = new Vehicle(gameContainer);
 
+        
+
         this.controllerInstance.initializerControllerRender(gameContainer);
 
         this.controllerInstance.onStartBtnClicked(() => {
             this.vehicle.attacheKeyboardEvent();
             this.vehicle.moveToXAxisTangent();
+
+
+            const crosswalk = `
+                <div class="crosswalk">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+
+        const roadTemplate = `
+            <div class="road">
+
+            </div>
+        `;
+        
+
+        document.getElementById("gameContainer").innerHTML += roadTemplate;
+        document.getElementById("gameContainer").innerHTML += roadTemplate;
+
+
+        const timeoutByMillisecond = 3000;
+
+        setTimeout(function named() {
+                const [firstRoadBox , secondeRoadBox] = Array.from(document.querySelectorAll(".road"));
+                
+                function timingLifecycle(element) {
+                    element.classList.add("comeInside");
+                    element.style.transitionDuration = `${timeoutByMillisecond}ms`
+
+                    let timer = setTimeout(() => {
+                        element.classList.remove("comeInside");
+                        element.style.transitionDuration = `${0}ms`
+                        clearTimeout(timer);
+                    } , timeoutByMillisecond);
+                }
+                
+                timingLifecycle(firstRoadBox);
+                
+                setInterval(() => {
+                    timingLifecycle(firstRoadBox)
+                } , timeoutByMillisecond + 10);
+                
+                setTimeout(() => {
+                    timingLifecycle(secondeRoadBox)
+                    setInterval(() => {
+                        timingLifecycle(secondeRoadBox)
+                    } , timeoutByMillisecond + 10);
+                } , timeoutByMillisecond / 2);
+
+        } , 1);
+
+
+
+
+
         })
     }
 }
